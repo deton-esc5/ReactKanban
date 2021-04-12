@@ -1,12 +1,20 @@
 import React from "react";
 import "./tasklist.css";
 import TaskItem from "../TaskItem/TaskItem";
+import plusIcon from "../../img/plus-icon.svg";
 
 import PropTypes from "prop-types";
 
-export default function TaskList({ title, onAddTask, tasks }) {
+export default function TaskList({
+  title,
+  taskState,
+  onAddTask,
+  tasks,
+  onTaskUpdate,
+  onDeleteTask
+}) {
   const addTask = () => {
-    onAddTask("Nova Tarefa", "Pendente");
+    onAddTask("Nova Tarefa", taskState);
   };
 
   return (
@@ -15,11 +23,22 @@ export default function TaskList({ title, onAddTask, tasks }) {
       <div className="content">
         {tasks.map((task) => {
           return (
-            <TaskItem id={task.id} title={task.title} taskState={task.state} />
+            <TaskItem
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              taskState={task.state}
+              onTaskUpdate={onTaskUpdate}
+              onDeleteTask={onDeleteTask}
+            />
           );
         })}
+        {tasks.length === 0 && <div className="empty-list">Lista Vazia</div>}
+        <button onClick={addTask} className="btn">
+          <img src={plusIcon} alt="plus" />
+          Adicionar Tarefa
+        </button>
       </div>
-      <button onClick={addTask}>Adicionar Tarefa</button>
     </div>
   );
 }
